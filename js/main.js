@@ -1,0 +1,130 @@
+document.addEventListener('DOMContentLoaded', function() {
+    initBikeReservationSystem();
+});
+
+function initBikeReservationSystem() {
+    const bikeSlots = document.querySelectorAll('.bike-slot');
+    const confirmBtn = document.getElementById('confirmBtn');
+    let selectedBike = null;
+    
+    if (!bikeSlots.length) return;
+    
+    bikeSlots.forEach(slot => {
+        slot.addEventListener('click', function() {
+            if (this.classList.contains('occupied')) {
+                showNotification('Esta bici ya está ocupada', 'error');
+                return;
+            }
+            
+            bikeSlots.forEach(s => s.classList.remove('active'));
+            
+            this.classList.add('active');
+            selectedBike = this.dataset.bike;
+            
+            updateReservationUI(selectedBike);
+            
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        });
+    });
+    
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            if (selectedBike) {
+                confirmReservation(selectedBike);
+            }
+        });
+    }
+}
+
+function updateReservationUI(bikeNumber) {
+    const confirmBtn = document.getElementById('confirmBtn');
+    const selectedBikeInfo = document.getElementById('selectedBikeInfo');
+    
+    if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = `<i class="bi bi-check-circle me-2"></i>CONFIRMAR BICI #${bikeNumber}`;
+    }
+    
+    if (selectedBikeInfo) {
+        selectedBikeInfo.innerHTML = `
+            <i class="bi bi-bicycle me-2"></i>
+            Has seleccionado la <strong>Bici #${bikeNumber}</strong>
+        `;
+        selectedBikeInfo.style.color = '#FF8A00';
+    }
+}
+
+function confirmReservation(bikeNumber) {
+    showNotification(`¡Reserva confirmada! Bici #${bikeNumber}`, 'success');
+    
+    setTimeout(() => {
+        const slot = document.querySelector(`[data-bike="${bikeNumber}"]`);
+        if (slot) {
+            slot.classList.remove('available', 'active');
+            slot.classList.add('occupied');
+            
+            const confirmBtn = document.getElementById('confirmBtn');
+            const selectedBikeInfo = document.getElementById('selectedBikeInfo');
+            
+            if (confirmBtn) {
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>CONFIRMAR RESERVA';
+            }
+            
+            if (selectedBikeInfo) {
+                selectedBikeInfo.innerHTML = `
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    ¡Reserva confirmada! Nos vemos en la clase 🎉
+                `;
+                selectedBikeInfo.style.color = '#28a745';
+            }
+        }
+    }, 500);
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#FF8A00'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+        font-weight: 600;
+        max-width: 300px;
+    `;
+    notification.innerHTML = `
+        <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info-circle'} me-2"></i>
+        ${message}
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
