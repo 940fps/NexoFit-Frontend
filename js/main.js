@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     initBikeReservationSystem();
+    initSmoothScroll();
+    initNavbarAnimation();
 });
 
 function initBikeReservationSystem() {
@@ -102,6 +104,8 @@ function showNotification(message, type = 'info') {
         font-weight: 600;
         max-width: 300px;
     `;
+
+    
     notification.innerHTML = `
         <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info-circle'} me-2"></i>
         ${message}
@@ -127,4 +131,43 @@ function showNotification(message, type = 'info') {
             notification.remove();
         }, 300);
     }, 3000);
+}
+
+function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href !== '#' && href !== '') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+}
+
+function initNavbarAnimation() {
+    const navbar = document.querySelector('.navbar');
+    let lastScroll = 0;
+    
+    if (!navbar) return;
+    
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 100) {
+            navbar.style.padding = '0.5rem 0';
+            navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
+        } else {
+            navbar.style.padding = '1rem 0';
+            navbar.style.boxShadow = 'none';
+        }
+        
+        lastScroll = currentScroll;
+    });
 }
