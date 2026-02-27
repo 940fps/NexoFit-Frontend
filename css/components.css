@@ -195,3 +195,155 @@ a {
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
+
+.badge-new, .badge-popular {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    animation: subtle-bounce 2s ease-in-out infinite;
+}
+
+.badge-popular {
+    background: linear-gradient(135deg, var(--brand-orange), var(--brand-red));
+    box-shadow: 0 4px 15px rgba(255, 138, 0, 0.4);
+}
+
+@keyframes subtle-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: var(--brand-orange);
+    font-size: 1.2rem;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--brand-orange) !important;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-link {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: linear-gradient(135deg, var(--brand-orange), var(--brand-red));
+    color: white;
+    transform: translateY(-3px) rotate(5deg);
+    box-shadow: 0 10px 20px rgba(255, 138, 0, 0.3);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.8s ease;
+}
+
+.input-group-text {
+    transition: all 0.3s ease;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+    outline: 2px solid var(--brand-orange);
+    outline-offset: 2px;
+}
+
+.badge.bg-success {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+.badge.bg-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+}
+
+.card-body-dark,
+.btn,
+.form-control,
+.form-select,
+.badge {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:focus,
+.form-control:focus,
+.form-select:focus,
+a:focus {
+    outline: 2px solid var(--brand-orange);
+    outline-offset: 2px;
+}
+
+@media print {
+    .navbar,
+    .footer-premium,
+    .scroll-top-btn,
+    .btn {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .text-gradient,
+    .text-white {
+        color: black !important;
+        -webkit-text-fill-color: black !important;
+    }
+}

@@ -32,21 +32,30 @@
 
     <main class="pt-5 mt-5">
         <section class="container py-5">
-            <div class="row mb-5 mt-4">
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb" class="mt-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-white-50"><i class="bi bi-house-fill"></i> Inicio</a></li>
+                    <li class="breadcrumb-item active text-gradient" aria-current="page">Clases</li>
+                </ol>
+            </nav>
+
+            <div class="row mb-4 mt-4">
                 <div class="col-lg-8 mx-auto text-center">
-                    <h1 class="display-3 fw-black text-white mb-3">
+                    <h1 class="display-3 fw-black text-white mb-3 fade-in-up">
                         Nuestras <span class="text-gradient">Clases</span>
                     </h1>
-                    <p class="text-white-50 fs-5">Descubre la clase perfecta para alcanzar tus objetivos</p>
+                    <p class="text-white-50 fs-5 fade-in-up">Descubre la clase perfecta para alcanzar tus objetivos</p>
                 </div>
             </div>
 
             <div class="row g-4 mb-5">
                 <div class="col-md-6 col-lg-4">
                     <div class="class-card rounded-4 overflow-hidden h-100">
-                        <div class="overflow-hidden" style="height: 280px;">
+                        <div class="overflow-hidden position-relative" style="height: 280px;">
                             <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=800&auto=format&fit=crop" 
                                 class="w-100 h-100 object-fit-cover img-zoom" alt="Cycling">
+                            <span class="badge-popular">POPULAR</span>
                         </div>
                         <div class="card-body-dark p-4">
                             <h4 class="fw-bold text-gradient mb-2">CYCLING INTENSO</h4>
@@ -65,7 +74,7 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="class-card rounded-4 overflow-hidden h-100">
-                        <div class="overflow-hidden" style="height: 280px;">
+                        <div class="overflow-hidden position-relative" style="height: 280px;">
                             <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop" 
                                 class="w-100 h-100 object-fit-cover img-zoom" alt="Yoga">
                         </div>
@@ -86,9 +95,10 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="class-card rounded-4 overflow-hidden h-100">
-                        <div class="overflow-hidden" style="height: 280px;">
+                        <div class="overflow-hidden position-relative" style="height: 280px;">
                             <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop" 
                                 class="w-100 h-100 object-fit-cover img-zoom" alt="CrossFit">
+                            <span class="badge-new">NUEVO</span>
                         </div>
                         <div class="card-body-dark p-4">
                             <h4 class="fw-bold text-gradient mb-2">CROSSFIT WOD</h4>
@@ -107,7 +117,7 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="class-card rounded-4 overflow-hidden h-100">
-                        <div class="overflow-hidden" style="height: 280px;">
+                        <div class="overflow-hidden position-relative" style="height: 280px;">
                             <img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?q=80&w=800&auto=format&fit=crop" 
                                 class="w-100 h-100 object-fit-cover img-zoom" alt="Boxing">
                         </div>
@@ -128,8 +138,8 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="class-card rounded-4 overflow-hidden h-100">
-                        <div class="overflow-hidden" style="height: 280px;">
-                            <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop" 
+                        <div class="overflow-hidden position-relative" style="height: 280px;">
+                            <img src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=800&auto=format&fit=crop" 
                                 class="w-100 h-100 object-fit-cover img-zoom" alt="Pilates">
                         </div>
                         <div class="card-body-dark p-4">
@@ -149,9 +159,10 @@
 
                 <div class="col-md-6 col-lg-4">
                     <div class="class-card rounded-4 overflow-hidden h-100">
-                        <div class="overflow-hidden" style="height: 280px;">
+                        <div class="overflow-hidden position-relative" style="height: 280px;">
                             <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop" 
                                 class="w-100 h-100 object-fit-cover img-zoom" alt="HIIT">
+                            <span class="badge-popular">POPULAR</span>
                         </div>
                         <div class="card-body-dark p-4">
                             <h4 class="fw-bold text-gradient mb-2">HIIT EXTREMO</h4>
@@ -179,13 +190,42 @@
         </section>
     </main>
 
-    <footer class="py-5 footer-premium text-center mt-5">
+    <footer class="py-5 footer-premium mt-5">
         <div class="container">
-            <div class="border-top border-white-5 pt-4">
+            <div class="row g-4 pb-4">
+                <div class="col-md-4">
+                    <h3 class="fw-black text-white mb-3">NEXO<span class="text-gradient">FIT</span></h3>
+                    <p class="text-white-50 mb-3">Transformando vidas a través del fitness desde 2020.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-white mb-3">Horario</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="bi bi-clock text-gradient me-2"></i>Lun - Vie: 6:00 - 23:00</li>
+                        <li class="mb-2"><i class="bi bi-clock text-gradient me-2"></i>Sábados: 8:00 - 20:00</li>
+                        <li class="mb-2"><i class="bi bi-clock text-gradient me-2"></i>Domingos: 9:00 - 15:00</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-white mb-3">Contacto</h5>
+                    <ul class="list-unstyled text-white-50">
+                        <li class="mb-2"><i class="bi bi-geo-alt-fill text-gradient me-2"></i>Calle Principal 123, Madrid</li>
+                        <li class="mb-2"><i class="bi bi-telephone-fill text-gradient me-2"></i>+34 900 123 456</li>
+                        <li class="mb-2"><i class="bi bi-envelope-fill text-gradient me-2"></i>info@nexofit.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-top border-white-5 pt-4 text-center">
                 <span class="text-white-50 small">NEXO<span class="text-gradient">FIT</span> &copy; 2026 - Todos los derechos reservados</span>
             </div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
