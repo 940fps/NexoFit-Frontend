@@ -1,0 +1,462 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Calendar, Clock, LogOut, Dumbbell, User } from '@lucide/astro';
+---
+
+<Layout>
+  <div class="dashboard">
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark sticky-top" style="background: rgba(20,20,20,0.98); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 107, 53, 0.2);">
+      <div class="container-fluid px-3 px-md-4">
+        <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#">
+          <Dumbbell size={24} class="text-warning" />
+          <span>NexoFit</span>
+        </a>
+        <div class="d-flex align-items-center gap-2">
+          <div class="d-flex align-items-center gap-2 bg-warning bg-opacity-10 px-3 py-2 rounded">
+            <img id="userAvatar" src="https://ui-avatars.com/api/?name=U&background=ff6b35&color=fff&size=64" alt="" class="rounded-circle" style="width: 32px; height: 32px;">
+            <span id="userName" class="fw-semibold d-none d-sm-inline" style="color: var(--text-primary);">Usuario</span>
+          </div>
+          <button id="logoutBtn" class="btn btn-outline-danger btn-sm" title="Cerrar sesión">
+            <LogOut size={18} />
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="py-4">
+      <div class="container-fluid px-3 px-md-4" style="max-width: 1400px;">
+        <!-- Header -->
+        <div class="card bg-dark border-warning border-opacity-25 mb-4" style="background: rgba(255, 107, 53, 0.05) !important;">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <h1 class="h3 fw-bold mb-1">
+                  ¡Hola, <span id="userNameTitle" class="text-warning">Atleta</span>!
+                </h1>
+                <p class="mb-0" style="color: var(--text-secondary);">Tus clases y entrenamientos</p>
+              </div>
+              <div class="col-md-6 mt-3 mt-md-0">
+                <div class="d-flex gap-3 justify-content-md-end">
+                  <div class="text-center px-4 py-2 bg-dark bg-opacity-50 rounded border border-warning border-opacity-25">
+                    <div class="h3 fw-bold mb-0 text-warning" id="reservationsCount">0</div>
+                    <small style="color: var(--text-secondary);">Reservas</small>
+                  </div>
+                  <div class="text-center px-4 py-2 bg-dark bg-opacity-50 rounded border border-warning border-opacity-25">
+                    <div class="h3 fw-bold mb-0 text-warning" id="classesCount">0</div>
+                    <small style="color: var(--text-secondary);">Disponibles</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mis Reservas -->
+        <section class="mb-5">
+          <h2 class="h4 fw-semibold mb-3 d-flex align-items-center gap-2">
+            <Calendar size={22} class="text-warning" />
+            Mis Reservas
+          </h2>
+          
+          <div id="bookingsLoader" class="text-center py-5">
+            <div class="spinner-border text-warning" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+
+          <div id="bookingsList" class="row g-3"></div>
+        </section>
+
+        <!-- Clases Disponibles -->
+        <section class="mb-5">
+          <h2 class="h4 fw-semibold mb-3 d-flex align-items-center gap-2">
+            <Dumbbell size={22} class="text-warning" />
+            Clases Disponibles
+          </h2>
+
+          <div id="classesLoader" class="text-center py-5">
+            <div class="spinner-border text-warning" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+
+          <div id="classesGrid" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .dashboard {
+    min-height: 100vh;
+    background: var(--bg-primary);
+  }
+
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+
+  .card {
+    background: var(--bg-secondary) !important;
+    border-color: rgba(255, 107, 53, 0.2) !important;
+  }
+
+  .card:hover {
+    border-color: rgba(255, 107, 53, 0.4) !important;
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.15);
+    transition: all 0.2s;
+  }
+
+  .text-warning {
+    color: #ffa500 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+  }
+
+  .btn-book {
+    background: linear-gradient(135deg, #ff6b35, #ffa500);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-book:hover:not(:disabled) {
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4);
+    transform: translateY(-1px);
+    color: white;
+  }
+
+  .btn-book:disabled {
+    opacity: 0.5;
+  }
+
+  .btn-book.reserved {
+    background: #dc3545;
+  }
+
+  .btn-book.reserved:hover {
+    background: #bb2d3b;
+  }
+
+  .progress {
+    height: 6px;
+    background-color: rgba(255, 107, 53, 0.15);
+  }
+
+  .progress-bar {
+    background: linear-gradient(90deg, #ffa500, #ff6b35);
+  }
+
+  .badge {
+    font-weight: 600;
+  }
+
+  .class-img {
+    height: 160px;
+    object-fit: cover;
+  }
+
+  .booking-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .booking-img {
+      width: 70px;
+      height: 70px;
+    }
+  }
+</style>
+
+<script>
+  import { getUser, logout, getClasses, getBookings, createBooking, deleteBooking, isAuthenticated } from '../utils/api.js';
+  import { showSuccess, showError, showWarning, initToastContainer } from '../utils/toast.js';
+
+  initToastContainer();
+
+  if (!isAuthenticated()) {
+    showWarning('Debes iniciar sesión');
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 1000);
+  }
+
+  const user = getUser();
+  let currentClasses: any[] = [];
+  let currentBookings: any[] = [];
+
+  // Set user info
+  if (user) {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    document.getElementById('userName')!.textContent = fullName;
+    document.getElementById('userNameTitle')!.textContent = user.firstName;
+    const avatar = document.getElementById('userAvatar') as HTMLImageElement;
+    avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=ff6b35&color=fff&size=64`;
+  }
+
+  // Logout
+  document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    if (confirm('¿Cerrar sesión?')) {
+      logout();
+    }
+  });
+
+  // Format date/time
+  function formatDateTime(dateString: string) {
+    const date = new Date(dateString);
+    const dateStr = date.toLocaleDateString('es-ES', { 
+      weekday: 'short', 
+      day: 'numeric', 
+      month: 'short'
+    });
+    const timeStr = date.toLocaleTimeString('es-ES', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+    return { date: dateStr, time: timeStr };
+  }
+
+  // Calculate duration
+  function calculateDuration(start: string, end: string) {
+    return Math.round((new Date(end).getTime() - new Date(start).getTime()) / 60000);
+  }
+
+  // Load bookings
+  async function loadBookings() {
+    const loader = document.getElementById('bookingsLoader')!;
+    const list = document.getElementById('bookingsList')!;
+    const countBadge = document.getElementById('reservationsCount')!;
+    
+    try {
+      loader.classList.remove('d-none');
+      list.classList.add('d-none');
+      
+      const response = await getBookings();
+      
+      if (response.success && response.data) {
+        currentBookings = response.data;
+        countBadge.textContent = currentBookings.length.toString();
+        renderBookings(currentBookings);
+      }
+    } catch (error) {
+      showError('Error al cargar reservas');
+      console.error(error);
+    } finally {
+      loader.classList.add('d-none');
+      list.classList.remove('d-none');
+    }
+  }
+
+  // Render bookings
+  function renderBookings(bookings: any[]) {
+    const list = document.getElementById('bookingsList')!;
+    
+    if (!bookings || bookings.length === 0) {
+      list.innerHTML = `
+        <div class="col-12">
+          <div class="card text-center py-5" style="background: rgba(255, 107, 53, 0.05) !important; border-style: dashed !important;">
+            <div class="card-body">
+              <div style="font-size: 3rem;" class="mb-3">📋</div>
+              <h5 class="card-title">No tienes reservas</h5>
+              <p class="card-text" style="color: var(--text-secondary);">Explora las clases y reserva tu entrenamiento</p>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = bookings.map((booking: any) => {
+      const cls = currentClasses.find((c: any) => c.id === (booking.class_id || booking.classId));
+      
+      if (!cls) return '';
+
+      const dateTime = formatDateTime(cls.start_time);
+      const duration = calculateDuration(cls.start_time, cls.end_time);
+      const image = cls.modality_image || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80';
+
+      return `
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <img src="${image}" alt="${cls.modality_name}" class="booking-img" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80'">
+                </div>
+                <div class="col">
+                  <h5 class="card-title mb-2">${cls.modality_name}</h5>
+                  <div class="d-flex flex-wrap gap-3 small" style="color: var(--text-secondary);">
+                    <span>📅 ${dateTime.date}</span>
+                    <span>🕒 ${dateTime.time} · ${duration}min</span>
+                    <span>👤 ${cls.instructor_name || 'Instructor'}</span>
+                  </div>
+                  <span class="badge bg-primary mt-2">✓ Confirmado</span>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-outline-danger" onclick="cancelBooking(${booking.id})">
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Load classes
+  async function loadClasses() {
+    const loader = document.getElementById('classesLoader')!;
+    const grid = document.getElementById('classesGrid')!;
+    const countBadge = document.getElementById('classesCount')!;
+    
+    try {
+      loader.classList.remove('d-none');
+      grid.classList.add('d-none');
+      
+      const response = await getClasses();
+      
+      if (response.success && response.data) {
+        currentClasses = response.data;
+        countBadge.textContent = currentClasses.length.toString();
+        
+        // Load bookings first to show which classes are booked
+        await loadBookings();
+        renderClasses(currentClasses);
+      }
+    } catch (error) {
+      showError('Error al cargar clases');
+      console.error(error);
+    } finally {
+      loader.classList.add('d-none');
+      grid.classList.remove('d-none');
+    }
+  }
+
+  // Render classes
+  function renderClasses(classes: any[]) {
+    const grid = document.getElementById('classesGrid')!;
+    
+    if (!classes || classes.length === 0) {
+      grid.innerHTML = `
+        <div class="col-12">
+          <div class="card text-center py-5" style="background: rgba(255, 107, 53, 0.05) !important; border-style: dashed !important;">
+            <div class="card-body">
+              <div style="font-size: 3rem;" class="mb-3">🏋️</div>
+              <h5 class="card-title">No hay clases disponibles</h5>
+              <p class="card-text" style="color: var(--text-secondary);">Pronto habrá nuevas clases</p>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = classes.map((cls: any) => {
+      const dateTime = formatDateTime(cls.start_time);
+      const duration = calculateDuration(cls.start_time, cls.end_time);
+      const current = parseInt(cls.current_bookings || 0);
+      const capacity = parseInt(cls.capacity || 20);
+      const available = capacity - current;
+      const percentage = (current / capacity) * 100;
+      const isFull = available <= 0;
+      const isAlmostFull = available <= 3 && available > 0;
+      const userBooking = currentBookings.find((b: any) => 
+        (b.class_id === cls.id || b.classId === cls.id)
+      );
+      const hasBooking = !!userBooking;
+      const image = cls.modality_image || 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80';
+
+      let badgeClass = 'bg-success';
+      let statusText = '✓ Disponible';
+      if (hasBooking) {
+        badgeClass = 'bg-primary';
+        statusText = '✓ Reservado';
+      } else if (isFull) {
+        badgeClass = 'bg-danger';
+        statusText = '✗ Lleno';
+      } else if (isAlmostFull) {
+        badgeClass = 'bg-warning text-dark';
+        statusText = '⚠ Últimas';
+      }
+
+      return `
+        <div class="col">
+          <div class="card h-100">
+            <div class="position-relative">
+              <img src="${image}" alt="${cls.modality_name}" class="card-img-top class-img" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80'">
+              <span class="badge ${badgeClass} position-absolute top-0 end-0 m-2">${statusText}</span>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">${cls.modality_name}</h5>
+              <div class="small mb-3" style="color: var(--text-secondary);">
+                <div class="mb-1">👤 ${cls.instructor_name || 'Instructor'}</div>
+                <div class="mb-1">📅 ${dateTime.date} · ${dateTime.time}</div>
+                <div>🕒 ${duration} minutos</div>
+              </div>
+              <div class="d-flex justify-content-between small fw-semibold mb-2">
+                <span>${current}/${capacity}</span>
+                <span class="text-warning">${available} libres</span>
+              </div>
+              <div class="progress mb-3" style="height: 6px;">
+                <div class="progress-bar" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <button 
+                class="btn btn-book w-100 ${hasBooking ? 'reserved' : ''}" 
+                onclick="${hasBooking ? `cancelBooking(${userBooking.id})` : `bookClass(${cls.id})`}"
+                ${isFull && !hasBooking ? 'disabled' : ''}
+              >
+                ${hasBooking ? 'Cancelar' : isFull ? 'Lleno' : 'Reservar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Book class
+  (window as any).bookClass = async (classId: number) => {
+    try {
+      const response = await createBooking({ class_id: classId });
+      if (response.success) {
+        showSuccess('¡Reserva realizada!');
+        await loadClasses();
+      } else {
+        showError(response.message || 'Error al reservar');
+      }
+    } catch (error) {
+      showError('Error al realizar la reserva');
+    }
+  };
+
+  // Cancel booking
+  (window as any).cancelBooking = async (bookingId: number) => {
+    if (!confirm('¿Cancelar esta reserva?')) return;
+    
+    try {
+      const response = await deleteBooking(bookingId);
+      if (response.success) {
+        showSuccess('Reserva cancelada');
+        await loadClasses();
+      } else {
+        showError(response.message || 'Error al cancelar');
+      }
+    } catch (error) {
+      showError('Error al cancelar la reserva');
+    }
+  };
+
+  // Initialize
+  loadClasses();
+</script>
